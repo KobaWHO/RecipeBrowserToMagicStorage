@@ -72,10 +72,12 @@ namespace RecipeBrowserToMagicStorage.Hooks
         {
             InvokeBase(self, e);
 
-            if ((!RecipeBrowserToMagicStorageConfig.Instance.ByHotKey ||
-                 !RecipeBrowserToMagicStorage.AutoRecallHotKey.Current) &&
-                (RecipeBrowserToMagicStorageConfig.Instance.ByHotKey ||
-                 RecipeBrowserToMagicStorage.AutoRecallHotKey.Current)) 
+            var byHotKey = ModContent.GetInstance<RecipeBrowserToMagicStorageConfig>().ByHotKey;
+
+            if ((!byHotKey ||
+                 !RecipeBrowserToMagicStorageKeybind.ActivateHotKey.Current) &&
+                (byHotKey ||
+                 RecipeBrowserToMagicStorageKeybind.ActivateHotKey.Current)) 
                 return;
 
             var item = ReflectionUtils.GetField<Item>(e.Target, "item");

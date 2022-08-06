@@ -13,19 +13,13 @@ namespace RecipeBrowserToMagicStorage
 {
 	public class RecipeBrowserToMagicStorage : Mod
     {
-        internal static ModKeybind AutoRecallHotKey;
-
         public override void Load()
         {
-            AutoRecallHotKey = KeybindLoader.RegisterKeybind(this, "Find in Storage", "LeftControl");
-
             RecipeBrowserHook.Load();
         }
-
+        
         public override void Unload()
         {
-            AutoRecallHotKey = null;
-
             RecipeBrowserHook.Unload();
         }
     }

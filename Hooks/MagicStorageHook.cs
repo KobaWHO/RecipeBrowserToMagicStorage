@@ -16,6 +16,7 @@ namespace RecipeBrowserToMagicStorage.Hooks
         public static void SetMagicStorageFilterName(string name)
         {
             Type type = null;
+            Action refreshItemsAction = null;
             var openedStorageType = GetCurrentOpenedStorageType();
             switch (openedStorageType)
             {
@@ -23,9 +24,11 @@ namespace RecipeBrowserToMagicStorage.Hooks
                     return;
                 case StorageType.Crafting:
                     type = typeof(CraftingGUI);
+                    refreshItemsAction = CraftingGUI.RefreshItems;
                     break;
                 case StorageType.Storage:
                     type = typeof(StorageGUI);
+                    refreshItemsAction = StorageGUI.RefreshItems;
                     break;
             }
 
@@ -35,12 +38,11 @@ namespace RecipeBrowserToMagicStorage.Hooks
 
             ReflectionUtils.SetValue(searchBar, "Text", name);
             ReflectionUtils.SetValue(searchBar, "cursorPosition", name.Length);
-            StorageGUI.RefreshItems();
+            refreshItemsAction?.Invoke();
 
             if (openedStorageType == StorageType.Crafting)
             {
-                var thread = new Thread(SelectFirstAvailableRecipe);
-                thread.Start(name);
+                SelectFirstAvailableRecipe(name);
             }
         }
 
@@ -49,11 +51,9 @@ namespace RecipeBrowserToMagicStorage.Hooks
             try
             {
                 var type = typeof(CraftingGUI);
-                while (ReflectionUtils.GetField<bool>(null, "threadRunning", type))
-                    Thread.Sleep(1);
 
-                var threadRecipes = ReflectionUtils.GetField<List<Recipe>>(null, "threadRecipes", type);
-                var threadRecipesAvailable = ReflectionUtils.GetField<List<bool>>(null, "threadRecipeAvailable", type);
+                var threadRecipes = ReflectionUtils.GetField<List<Recipe>>(null, "recipes", type);
+                var threadRecipesAvailable = ReflectionUtils.GetField<List<bool>>(null, "recipeAvailable", type);
                 if (threadRecipes == null || threadRecipesAvailable == null)
                     return;
 

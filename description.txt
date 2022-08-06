@@ -11,6 +11,12 @@ By default filters by click on item only if the filter hot key is pressed in tha
 
 Change log:
 
+1.0.0.8:
+Fixed config saving
+
+1.0.0.7:
+Fixed recipe selection
+
 1.0.0.6:
 Added empty icon
 Changed mod type to client side
