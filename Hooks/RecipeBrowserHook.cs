@@ -17,7 +17,8 @@ namespace RecipeBrowserToMagicStorage.Hooks
 
         private const string MethodName = "Click";
 
-        private delegate void HookClick(object self, UIMouseEvent e);
+        private delegate void ClickOriginal(object self, UIMouseEvent e);
+        private delegate void HookClick(ClickOriginal originalAction, object self, UIMouseEvent e);
 
         private static MethodInfo[] RecipeSlotOnClickMethods { get; set; } = new MethodInfo[3];
         private static string[] TypeNames { get; set; } = new string[3];
@@ -48,7 +49,7 @@ namespace RecipeBrowserToMagicStorage.Hooks
         {
             for (var i = 0; i < RecipeSlotOnClickMethods.Length; i++)
                 if (RecipeSlotOnClickMethods[i] != null)
-                    HookEndpointManager.Remove(RecipeSlotOnClickMethods[i], (HookClick)OnClickHook);
+                    HookEndpointManager.Remove(RecipeSlotOnClickMethods[i], (HookClick) OnClickHook);
         }
 
         private static void Register()
@@ -57,20 +58,10 @@ namespace RecipeBrowserToMagicStorage.Hooks
                 if (RecipeSlotOnClickMethods[i] != null)
                     HookEndpointManager.Add(RecipeSlotOnClickMethods[i], (HookClick) OnClickHook);
         }
-        private static void InvokeBase(object self, UIMouseEvent e)
+
+        private static void OnClickHook(ClickOriginal originalAction, object self, UIMouseEvent e)
         {
-            UnRegister();
-
-            var type = self.GetType();
-            var method =  ReflectionUtils.GetMethodInfo(type, MethodName);
-            method?.Invoke(self, new[] { e });
-
-            Register();
-        }
-
-        private static void OnClickHook(object self, UIMouseEvent e)
-        {
-            InvokeBase(self, e);
+            originalAction(self, e);
 
             var byHotKey = ModContent.GetInstance<RecipeBrowserToMagicStorageConfig>().ByHotKey;
 

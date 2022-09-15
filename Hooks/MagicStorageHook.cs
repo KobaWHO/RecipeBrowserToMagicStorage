@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using MagicStorage;
+using MagicStorage.Common.Systems;
 using MagicStorage.Components;
 using MagicStorage.UI;
+using MagicStorage.UI.States;
 using RecipeBrowserToMagicStorage.Utils;
 using Terraria;
 using Terraria.ModLoader;
@@ -17,6 +19,8 @@ namespace RecipeBrowserToMagicStorage.Hooks
         {
             Type type = null;
             Action refreshItemsAction = null;
+            object storagePage = null;
+
             var openedStorageType = GetCurrentOpenedStorageType();
             switch (openedStorageType)
             {
@@ -25,14 +29,16 @@ namespace RecipeBrowserToMagicStorage.Hooks
                 case StorageType.Crafting:
                     type = typeof(CraftingGUI);
                     refreshItemsAction = CraftingGUI.RefreshItems;
+                    storagePage = MagicUI.craftingUI.GetPage("Crafting");
                     break;
                 case StorageType.Storage:
                     type = typeof(StorageGUI);
                     refreshItemsAction = StorageGUI.RefreshItems;
+                    storagePage = MagicUI.storageUI.GetPage("Storage");
                     break;
             }
-
-            var searchBar = ReflectionUtils.GetField<UISearchBar>(null, "searchBar", type);
+            
+            var searchBar = ReflectionUtils.GetField<UISearchBar>(storagePage, "searchBar");
             if (searchBar == null)
                 return;
 

@@ -11,6 +11,12 @@ By default filters by click on item only if the filter hot key is pressed in tha
 
 Change log:
 
+1.0.0.10:
+Fixed incompatible with other mods hook approach
+
+1.0.0.9:
+Updated to latest TML
+
 1.0.0.8:
 Fixed config saving
 
