@@ -9,7 +9,16 @@ Filters when the item selected in one of Recipe list, Ingrigient list or Items l
 
 By default filters by click on item only if the filter hot key is pressed in that moment. That behaviour can be changed in the config.
 
+If you encounter any errors, please don't hesitate to create a ticket in my GitHub repository (https://github.com/Kinoler/RecipeBrowserToMagicStorage/issues), specifying your exact version of Terraria and TML.
+
 Change log:
+
+1.0.0.12:
+Fixed auto select recipe feature
+
+1.0.0.11:
+Updated to 1.4.4 TML
+Description updated
 
 1.0.0.10:
 Fixed incompatible with other mods hook approach

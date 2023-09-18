@@ -15,7 +15,7 @@ namespace RecipeBrowserToMagicStorage.Hooks
         private const string TypeName2 = "UIIngredientSlot";
         private const string TypeName3 = "UIItemCatalogueItemSlot";
 
-        private const string MethodName = "Click";
+        private const string MethodName = "LeftClick";
 
         private delegate void ClickOriginal(object self, UIMouseEvent e);
         private delegate void HookClick(ClickOriginal originalAction, object self, UIMouseEvent e);
@@ -40,23 +40,15 @@ namespace RecipeBrowserToMagicStorage.Hooks
         }
         public static void Unload()
         {
-            UnRegister();
             RecipeSlotOnClickMethods = null;
             TypeNames = null;
-        }
-
-        private static void UnRegister()
-        {
-            for (var i = 0; i < RecipeSlotOnClickMethods.Length; i++)
-                if (RecipeSlotOnClickMethods[i] != null)
-                    HookEndpointManager.Remove(RecipeSlotOnClickMethods[i], (HookClick) OnClickHook);
         }
 
         private static void Register()
         {
             for (var i = 0; i < RecipeSlotOnClickMethods.Length; i++)
                 if (RecipeSlotOnClickMethods[i] != null)
-                    HookEndpointManager.Add(RecipeSlotOnClickMethods[i], (HookClick) OnClickHook);
+                    MonoModHooks.Add(RecipeSlotOnClickMethods[i], (HookClick)OnClickHook);
         }
 
         private static void OnClickHook(ClickOriginal originalAction, object self, UIMouseEvent e)

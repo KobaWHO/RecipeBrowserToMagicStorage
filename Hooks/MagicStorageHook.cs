@@ -56,6 +56,8 @@ namespace RecipeBrowserToMagicStorage.Hooks
         {
             try
             {
+                StorageGUI.RefreshItems();
+
                 var type = typeof(CraftingGUI);
 
                 var threadRecipes = ReflectionUtils.GetField<List<Recipe>>(null, "recipes", type);
