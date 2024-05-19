@@ -1,0 +1,12 @@
+// "Keybinds.Find in Storage.DisplayName": Найти в хранилище
+
+Configs: {
+	RecipeBrowserToMagicStorageConfig: {
+		// DisplayName: Конфиг
+
+		ByHotKey: {
+			// Label: По горячей клавише
+			// Tooltip: Вкл — меняется только при нажатии горячей клавиши. Выкл — меняется всегда, за исключением случаев нажатия горячей клавиши
+		}
+	}
+}
